@@ -22,6 +22,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'name',
         'email',
         'password',
+        'role', // Added role attribute
     ];
 
     /**
@@ -43,4 +44,10 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function cutis()
+    {
+        return $this->hasMany(Cuti::class);
+    }
+
 }
