@@ -8,7 +8,7 @@
             <div class="text-green-600">{{ session('success') }}</div>
         @endif
 
-        <a href="{{ route('cuti.create') }}" class="bg-green-500 text-white px-4 py-2 rounded inline-block mb-4">
+        <a href="{{ route('user.cuti.create') }}" class="bg-green-500 text-white px-4 py-2 rounded inline-block mb-4">
             Ajukan Cuti Baru
         </a>
 
