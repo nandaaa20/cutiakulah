@@ -10,12 +10,14 @@ class Cuti extends Model
     use HasFactory;
 
     protected $table = 'cuti'; // Sesuaikan jika nama tabel berbeda
+
     protected $fillable = [
         'user_id',
-        'status',
-        'catatan',
         'tanggal_mulai',
         'tanggal_selesai',
+        'alasan',
+        'status',
+        'catatan',
         // tambahkan kolom lain sesuai kebutuhan
     ];
 
