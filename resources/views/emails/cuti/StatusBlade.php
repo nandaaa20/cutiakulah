@@ -1,17 +1,16 @@
-@component('mail::message')
-# Halo, {{ $user->name }}
+<?php
+echo "# Halo, " . htmlspecialchars($user->name) . "\n\n";
 
-Pengajuan cuti Anda telah **{{ $status }}**.
+echo "Pengajuan cuti Anda telah **{{ $status }}**";
+echo "Pengajuan cuti Anda telah <strong>" . htmlspecialchars($status) . "</strong>.<br><br>\n";
 
-@if($catatan)
-Catatan:
-> {{ $catatan }}
-@endif
+if (!empty($catatan)) {
+	echo "Catatan:<br>\n";
+	echo "&gt; " . nl2br(htmlspecialchars($catatan)) . "<br><br>\n";
+}
 
-@component('mail::button', ['url' => url('/cuti')])
-Lihat Pengajuan Cuti
-@endcomponent
+echo '<a href="' . url('/cuti') . '" style="display:inline-block;padding:10px 20px;background:#3869D4;color:#fff;text-decoration:none;border-radius:4px;">Lihat Pengajuan Cuti</a><br><br>';
 
-Terima kasih,<br>
-{{ config('app.name') }}
-@endcomponent
+echo "Terima kasih,<br>\n";
+echo htmlspecialchars(config('app.name')) . "\n";
+
