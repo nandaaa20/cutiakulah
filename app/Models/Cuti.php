@@ -9,17 +9,21 @@ class Cuti extends Model
 {
     use HasFactory;
 
+    protected $table = 'cuti'; // Sesuaikan jika nama tabel berbeda
+
     protected $fillable = [
         'user_id',
         'tanggal_mulai',
         'tanggal_selesai',
         'alasan',
         'status',
+        'catatan',
+        // tambahkan kolom lain sesuai kebutuhan
     ];
 
+    // Relasi ke model User
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 }
-
