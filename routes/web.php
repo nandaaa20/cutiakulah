@@ -47,6 +47,8 @@ Route::middleware(['auth', 'role:user'])->prefix('user')->name('user.')->group(f
     Route::get('/cuti/create', [UserCutiController::class, 'create'])->name('cuti.create');
     Route::post('/cuti', [UserCutiController::class, 'store'])->name('cuti.store');
     Route::get('/cuti/{id}', [UserCutiController::class, 'show'])->name('cuti.show');
+    
+
 });
 
 //  EMAIL VERIFIKASI 

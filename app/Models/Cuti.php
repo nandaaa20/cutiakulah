@@ -21,5 +21,11 @@ class Cuti extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    protected $casts = [
+        'tanggal_mulai' => 'date',
+        'tanggal_selesai' => 'date',
+    ];
+
 }
 
