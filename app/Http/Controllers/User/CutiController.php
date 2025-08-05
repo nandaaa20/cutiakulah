@@ -18,7 +18,24 @@ class CutiController extends Controller
 
     public function create()
     {
-        return view('user.cuti.create');
+        $user = auth()->user();
+        $MAX_CUTI = 12;
+
+        // Hitung total hari cuti yang sudah diajukan (pending & disetujui)
+        $cutiTerpakai = $user->cutis()
+            ->whereIn('status', ['pending', 'disetujui'])
+            ->get()
+            ->sum(function($cuti) {
+                return \Carbon\Carbon::parse($cuti->tanggal_mulai)
+                    ->diffInDays(\Carbon\Carbon::parse($cuti->tanggal_selesai)) + 1;
+            });
+
+        $sisaCuti = $MAX_CUTI - $cutiTerpakai;
+
+        return view('user.cuti.create', [
+            'sisaCuti' => $sisaCuti,
+            'MAX_CUTI' => $MAX_CUTI
+        ]);
     }
 
     public function store(Request $request)
@@ -39,5 +56,11 @@ class CutiController extends Controller
 
         return redirect()->route('user.dashboard')
              ->with('success', 'Pengajuan cuti berhasil dikirim');
+    }
+    
+        public function show($id)
+    {
+        $cuti = Cuti::where('user_id', Auth::id())->with('user')->findOrFail($id);
+        return view('user.cuti.show', compact('cuti'));
     }
 }

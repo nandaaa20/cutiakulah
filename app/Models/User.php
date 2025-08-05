@@ -2,44 +2,29 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Support\Carbon;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $fillable = [
         'name',
         'email',
         'password',
-        'role', // Added role attribute
+        'role',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
@@ -50,4 +35,21 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Cuti::class);
     }
 
+    public function getSisaCutiAttribute()
+    {
+        $year = now()->year;
+        $entitlement = 12;
+
+        $used = $this->cutis()
+            ->where('status', 'disetujui')
+            ->whereYear('tanggal_mulai', $year)
+            ->get()
+            ->reduce(function ($carry, $cuti) {
+                $start = Carbon::parse($cuti->tanggal_mulai);
+                $end = Carbon::parse($cuti->tanggal_selesai);
+                return $carry + $start->diffInDays($end) + 1;
+            }, 0);
+
+        return max($entitlement - $used, 0);
+    }
 }
