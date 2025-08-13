@@ -4,10 +4,9 @@
             <!-- Left: Brand + Links -->
             <div class="flex items-center space-x-6">
                 <a href="{{ route('dashboard') }}" class="flex items-center gap-2 text-gray-800 font-semibold">
-                    <div class="h-8 w-8 bg-indigo-600 rounded flex items-center justify-center text-white font-bold">
-                        C
+                    <div class="h-8 w-30 bg-indigo-600 rounded flex items-center justify-center text-white font-bold">
+                         HRIS 
                     </div>
-                    <span>CutiAkulah</span>
                 </a>
                 @if(Auth::user()->role === 'admin')
                     <a href="{{ route('admin.dashboard') }}"

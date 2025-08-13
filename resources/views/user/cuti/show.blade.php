@@ -4,6 +4,13 @@
     </x-slot>
 
     <div class="py-6 max-w-3xl mx-auto sm:px-6 lg:px-8">
+        <div class="mb-4 flex justify-end">
+            <a href="{{ route('user.cuti.cetak', $cuti->id) }}"
+               class="inline-block px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
+                Export PDF
+            </a>
+        </div>
+
         <div class="bg-white shadow rounded-lg p-6 space-y-6">
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
@@ -16,11 +23,15 @@
                 </div>
                 <div>
                     <p class="text-sm text-gray-500">Tanggal Mulai</p>
-                    <p class="font-semibold">{{ \Carbon\Carbon::parse($cuti->tanggal_mulai)->format('d M Y') }}</p>
+                    <p class="font-semibold text-gray-900">
+                        {{ \Carbon\Carbon::parse($cuti->tanggal_mulai)->format('d M Y') }}
+                    </p>
                 </div>
                 <div>
                     <p class="text-sm text-gray-500">Tanggal Selesai</p>
-                    <p class="font-semibold">{{ \Carbon\Carbon::parse($cuti->tanggal_selesai)->format('d M Y') }}</p>
+                    <p class="font-semibold text-gray-900">
+                        {{ \Carbon\Carbon::parse($cuti->tanggal_selesai)->format('d M Y') }}
+                    </p>
                 </div>
                 <div class="sm:col-span-2">
                     <p class="text-sm text-gray-500">Alasan</p>
@@ -28,7 +39,7 @@
                 </div>
                 <div>
                     <p class="text-sm text-gray-500">Durasi</p>
-                    <p class="font-medium">
+                    <p class="font-medium text-gray-900">
                         {{ \Carbon\Carbon::parse($cuti->tanggal_mulai)->diffInDays(\Carbon\Carbon::parse($cuti->tanggal_selesai)) + 1 }} hari
                     </p>
                 </div>
@@ -44,8 +55,9 @@
                 </div>
             </div>
 
-            <div class="flex gap-3">
-                <a href="{{ route('user.dashboard') }}" class="inline-block px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700">
+            <div class="flex justify-start pt-4">
+                <a href="{{ route('user.dashboard') }}"
+                   class="inline-block px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700">
                     ← Kembali
                 </a>
             </div>

@@ -6,10 +6,11 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Cuti;
 use Illuminate\Support\Facades\Auth;
+use Barryvdh\DomPDF\Facade\Pdf;
+
 
 class CutiController extends Controller
 {
-    // contoh method
     public function index()
     {
         $cutis = Cuti::where('user_id', Auth::id())->latest()->get();
@@ -21,7 +22,6 @@ class CutiController extends Controller
         $user = auth()->user();
         $MAX_CUTI = 12;
 
-        // Hitung total hari cuti yang sudah diajukan (pending & disetujui)
         $cutiTerpakai = $user->cutis()
             ->whereIn('status', ['pending', 'disetujui'])
             ->get()
@@ -51,7 +51,7 @@ class CutiController extends Controller
             'tanggal_mulai' => $validated['tanggal_mulai'],
             'tanggal_selesai' => $validated['tanggal_selesai'],
             'alasan' => $validated['alasan'],
-            'status' => 'pending', // Status default
+            'status' => 'pending', 
         ]);
 
         return redirect()->route('user.dashboard')
@@ -62,5 +62,17 @@ class CutiController extends Controller
     {
         $cuti = Cuti::where('user_id', Auth::id())->with('user')->findOrFail($id);
         return view('user.cuti.show', compact('cuti'));
+    }
+
+    public function cetak($id)
+    {
+        $cuti = Cuti::with('user')->findOrFail($id);
+
+        if ($cuti->user_id !== auth()->id()) {
+            abort(403, 'Kamu tidak punya akses ke data ini.');
+        }
+
+        $pdf = Pdf::loadView('user.cuti.pdf', compact('cuti'));
+        return $pdf->download('cuti-detail.pdf');
     }
 }
